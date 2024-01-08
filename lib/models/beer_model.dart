@@ -1,4 +1,3 @@
-// lib/models/beer_model.dart
 class BeerModel {
   final int id;
   final String name;
@@ -26,7 +25,6 @@ class BeerModel {
     required this.brewersTips,
   });
 
-  // Factory method to create an instance from a JSON map
   factory BeerModel.fromJson(Map<String, dynamic> json) {
     return BeerModel(
       id: json['id'],

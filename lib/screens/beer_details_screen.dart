@@ -1,7 +1,72 @@
-// lib/screens/beer_details_screen.dart
 import 'package:flutter/material.dart';
+import 'package:velocity_x/velocity_x.dart';
 import '../blocs/beer_details_bloc.dart';
 import '../models/beer_model.dart';
+
+class SpecificationItem extends StatelessWidget {
+  final String title;
+  final String value;
+
+  SpecificationItem({required this.title, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '$title:',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.blue,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(fontSize: 16.0),
+        ),
+        SizedBox(height: 16.0),
+      ],
+    );
+  }
+}
+
+class NavigationItem extends StatelessWidget {
+  final String title;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  NavigationItem(
+      {required this.title, required this.isSelected, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: MediaQuery.of(context).size.width / 2,
+        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: isSelected ? Colors.blue : Colors.grey,
+              width: 2.0,
+            ),
+          ),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              color: isSelected ? Colors.blue : Colors.grey,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class BeerDetailsScreen extends StatefulWidget {
   final int beerId;
@@ -13,7 +78,7 @@ class BeerDetailsScreen extends StatefulWidget {
 }
 
 class _BeerDetailsScreenState extends State<BeerDetailsScreen> {
-  String selectedSection = 'Description'; // Default section
+  String selectedSection = 'Description';
 
   @override
   void initState() {
@@ -63,48 +128,40 @@ class _BeerDetailsScreenState extends State<BeerDetailsScreen> {
                       ),
                     ),
                     SizedBox(height: 16.0),
-                    Divider(height: 1.0, thickness: 1.0),
+                    Divider(
+                      height: 1.0,
+                      thickness: 1.0,
+                      indent: 0,
+                      endIndent: 0,
+                    ),
                     SizedBox(height: 16.0),
-                    // Navigation
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectedSection = 'Description';
-                            });
-                          },
-                          child: Text(
-                            'Description',
-                            style: TextStyle(
-                              fontWeight: selectedSection == 'Description'
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: Colors.blue,
-                            ),
+                        Expanded(
+                          child: NavigationItem(
+                            title: 'Description',
+                            isSelected: selectedSection == 'Description',
+                            onTap: () {
+                              setState(() {
+                                selectedSection = 'Description';
+                              });
+                            },
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              selectedSection = 'Specifications';
-                            });
-                          },
-                          child: Text(
-                            'Specifications',
-                            style: TextStyle(
-                              fontWeight: selectedSection == 'Specifications'
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: Colors.blue,
-                            ),
+                        Expanded(
+                          child: NavigationItem(
+                            title: 'Specifications',
+                            isSelected: selectedSection == 'Specifications',
+                            onTap: () {
+                              setState(() {
+                                selectedSection = 'Specifications';
+                              });
+                            },
                           ),
                         ),
                       ],
                     ),
                     SizedBox(height: 16.0),
-                    // Content based on selected section
                     if (selectedSection == 'Description')
                       Text(
                         beer.description,
@@ -114,15 +171,33 @@ class _BeerDetailsScreenState extends State<BeerDetailsScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('ABV: ${beer.abv.toStringAsFixed(1)}%'),
-                          Text('IBU: ${beer.ibu.toStringAsFixed(1)}'),
-                          Text('Brewing Method: ${beer.brewingMethod}'),
+                          SpecificationItem(
+                            title: 'ABV',
+                            value: '${beer.abv.toStringAsFixed(1)}%',
+                          ),
+                          SpecificationItem(
+                            title: 'IBU',
+                            value: beer.ibu.toStringAsFixed(1),
+                          ),
+                          SpecificationItem(
+                            title: 'Brewing Method',
+                            value: beer.brewingMethod,
+                          ),
                           SizedBox(height: 16.0),
-                          Text('Ingredients: ${beer.ingredients.join(', ')}'),
+                          SpecificationItem(
+                            title: 'Ingredients',
+                            value: beer.ingredients.join(', '),
+                          ),
                           SizedBox(height: 16.0),
-                          Text('Food Pairing: ${beer.foodPairing.join(', ')}'),
+                          SpecificationItem(
+                            title: 'Food Pairing',
+                            value: beer.foodPairing.join(', '),
+                          ),
                           SizedBox(height: 16.0),
-                          Text('Brewer\'s Tips: ${beer.brewersTips}'),
+                          SpecificationItem(
+                            title: "Brewer's Tips",
+                            value: beer.brewersTips,
+                          ),
                         ],
                       ),
                   ],

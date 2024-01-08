@@ -1,4 +1,3 @@
-// lib/blocs/beer_list_bloc.dart
 import 'dart:async';
 import '../models/beer_model.dart';
 import '../services/api_service.dart';
@@ -19,7 +18,27 @@ class BeerListBloc {
       print('Error fetching beers: $e');
     }
   }
-  
+
+  void filterByABVHighToLow() {
+    _currentBeerList.sort((a, b) => b.abv.compareTo(a.abv));
+    _beerListController.add(List.from(_currentBeerList));
+  }
+
+  void filterByABVLowToHigh() {
+    _currentBeerList.sort((a, b) => a.abv.compareTo(b.abv));
+    _beerListController.add(List.from(_currentBeerList));
+  }
+
+  void filterByIBUHighToLow() {
+    _currentBeerList.sort((a, b) => b.ibu.compareTo(a.ibu));
+    _beerListController.add(List.from(_currentBeerList));
+  }
+
+  void filterByIBULowToHigh() {
+    _currentBeerList.sort((a, b) => a.ibu.compareTo(b.ibu));
+    _beerListController.add(List.from(_currentBeerList));
+  }
+
   void filterByABV(double minABV, double maxABV) {
     List<BeerModel> filteredList = _currentBeerList
         .where((beer) => beer.abv >= minABV && beer.abv <= maxABV)
@@ -33,7 +52,7 @@ class BeerListBloc {
         .toList();
     _beerListController.add(filteredList);
   }
-  
+
   void dispose() {
     _beerListController.close();
   }
