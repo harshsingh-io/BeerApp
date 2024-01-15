@@ -7,7 +7,7 @@ Welcome to the Beer Explorer app, a Flutter project utilizing the BLoC pattern a
 The Beer Explorer app is designed to provide users with an extensive list of beers, fetched from the Punk API. The app utilizes the BLoC pattern for efficient state management, creating a seamless and responsive user experience.
 
 
-<img src="https://github.com/harshsingh-io/BeerApp/raw/main/6116255260269875734.gif" alt="Demo GIF" width="200" height="400">
+<img src="https://github.com/harshsingh-io/BeerApp/raw/main/6116255260269875734.gif" alt="Demo GIF" width="180" height="400">
 
 ## Features
 
